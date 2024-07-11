@@ -1,31 +1,44 @@
-import { Tabs } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { View, Text } from 'react-native';
 import React from 'react';
-import {Text,View} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Profile from './(tabs)/profile';
-import Homescreen from '../screens/Homescreen';
-import { Link } from 'expo-router';
+import { useFonts } from 'expo-font';
+import {Slot,Stack, SplashScreen } from 'expo-router';
+import { useEffect } from 'react';
+
+SplashScreen.preventAutoHideAsync();
 
 
 
-
-
-const App=()=>{
+const Homescreen = () => {
+  const [fontsLoaded, error] = useFonts({
+    "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
+    "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
+    "Poppins-ExtraBold": require("../assets/fonts/Poppins-ExtraBold.ttf"),
+    "Poppins-ExtraLight": require("../assets/fonts/Poppins-ExtraLight.ttf"),
+    "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
+    "Poppins-Medium": require("../assets/fonts/Poppins-Medium.ttf"),
+    "Poppins-Regular": require("../assets/fonts/Poppins-Regular.ttf"),
+    "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
+    "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
+  });
+  
+  useEffect(() => {
+    if (error) throw error;
+  
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, error]);
+  
+  if (!fontsLoaded && !error)  {
+    return null;
+  }
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{headerShown:false}}/>
     
-  return(
-    
-        <View className="flex-1 items-center justify-center bg-white">
-            <Text className="text-3xl font-pblack"> <Homescreen/> </Text>
-            <Link href="./home" className='bg-blue-300'>Home</Link>
-            
-            <StatusBar style='auto'/>
-        </View>
-    
-    
-
+      
+    </Stack>
   )
 }
 
-
-export default App
+export default Homescreen
